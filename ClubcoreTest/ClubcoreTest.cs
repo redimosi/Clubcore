@@ -97,7 +97,51 @@ namespace ClubcoreTest
                 Assert.That(group3.Clubs.Count, Is.EqualTo(2));
                 Assert.That(group3.Clubs.Any(c => c.Name == "Club 1"), Is.True);
                 Assert.That(group3.Clubs.Any(c => c.Name == "Club 2"), Is.True);
+
+
+                var club1 = context.Clubs.Include(c => c.Groups).Single(c => c.Name == "Club 1");
+                var club2 = context.Clubs.Include(c => c.Groups).Single(c => c.Name == "Club 2");
+
+                Assert.That(club1.Groups.Count, Is.EqualTo(3));
+                Assert.That(club1.Groups.Any(g => g.Name == "Group 1"), Is.True);
+                Assert.That(club1.Groups.Any(g => g.Name == "Group 2"), Is.True);
+                Assert.That(club1.Groups.Any(g => g.Name == "Group 3"), Is.True);
+
+                Assert.That(club2.Groups.Count, Is.EqualTo(1));
+                Assert.That(club2.Groups.Any(g => g.Name == "Group 3"), Is.True);
+
+                group3.Clubs.Remove(club1);
+                club1.Groups.Remove(group2);
+                context.SaveChanges();
             }
+
+            using (var context = new ClubcoreDbContext(options))
+            {
+                var group1 = context.Groups.Include(g => g.Clubs).Single(g => g.Name == "Group 1");
+                var group2 = context.Groups.Include(g => g.Clubs).Single(g => g.Name == "Group 2");
+                var group3 = context.Groups.Include(g => g.Clubs).Single(g => g.Name == "Group 3");
+
+                Assert.That(group1.Clubs.Count, Is.EqualTo(1));
+                Assert.That(group1.Clubs.Any(c => c.Name == "Club 1"), Is.True);
+
+                Assert.That(group2.Clubs.Count, Is.EqualTo(0));
+
+                Assert.That(group3.Clubs.Count, Is.EqualTo(1));
+                Assert.That(group3.Clubs.Any(c => c.Name == "Club 2"), Is.True);
+
+
+                var club1 = context.Clubs.Include(c => c.Groups).Single(c => c.Name == "Club 1");
+                var club2 = context.Clubs.Include(c => c.Groups).Single(c => c.Name == "Club 2");
+
+                Assert.That(club1.Groups.Count, Is.EqualTo(1));
+                Assert.That(club1.Groups.Any(g => g.Name == "Group 1"), Is.True);
+
+                Assert.That(club2.Groups.Count, Is.EqualTo(1));
+                Assert.That(club2.Groups.Any(g => g.Name == "Group 3"), Is.True);
+
+            }
+
+
         }
 
         [Test]

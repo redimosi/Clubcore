@@ -2,8 +2,8 @@
 {
     public class GroupRelationship
     {
-        public int ParentGroupId { get; set; }
+        public Guid ParentGroupId { get; set; }
 
-        public int ChildGroupId { get; set; }
+        public Guid ChildGroupId { get; set; }
     }
 }

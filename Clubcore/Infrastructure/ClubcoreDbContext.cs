@@ -30,6 +30,13 @@ namespace Clubcore.Infrastructure
                 .HasMany(g => g.Clubs)
                 .WithMany(c => c.Groups)
                 .UsingEntity<ClubGroup>();
+
+            modelBuilder.Entity<Group>()
+                .HasMany(g => g.ParentGroups)
+                .WithMany(g => g.ChildGroups)
+                .UsingEntity<GroupRelationship>(
+                    l => l.HasOne<Group>().WithMany().HasForeignKey(e => e.ParentGroupId),
+                    r => r.HasOne<Group>().WithMany().HasForeignKey(e =>e.ChildGroupId));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

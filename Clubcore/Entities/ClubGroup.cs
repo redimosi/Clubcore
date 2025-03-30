@@ -5,8 +5,8 @@ namespace Clubcore.Entities
 {
     public class ClubGroup : IEntity
     {
-        public int ClubId { get; set; }
-        public int GroupId { get; set; }
+        public Guid ClubId { get; set; }
+        public Guid GroupId { get; set; }
         public List<TimeRange> TimeRanges { get; set; } = [];
     }
 
