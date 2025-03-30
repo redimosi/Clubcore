@@ -6,6 +6,7 @@ namespace Clubcore.Entities
     {
         public int ClubId { get; set; }
         public string Name { get; set; }
-        public List<Team> Teams { get; set; } = [];
+        public List<Group> Groups { get; set; } = [];
+
     }
 }

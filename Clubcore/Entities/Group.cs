@@ -1,4 +1,5 @@
-﻿namespace Clubcore.Entities
+﻿
+namespace Clubcore.Entities
 {
     public class Group : IEntity
     {
@@ -10,10 +11,11 @@
         public int GroupId { get; set; }
         public string Name { get; set; }
         public int ClubId { get; set; }
-        public Club Club { get; set; }
+        public List<Club> Clubs { get; set; } = [];
         public List<Person> Members { get; set; } = [];
         public GroupType Type { get; set; }
-        public List<GroupRelationship> ParentGroups { get; set; } = new();
-        public List<GroupRelationship> ChildGroups { get; set; } = new();
+        public List<Group> ParentGroups { get; set; } = [];
+        public List<Group> ChildGroups { get; set; } = [];
+
     }
 }
