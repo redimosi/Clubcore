@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Clubcore.Entities
 {
@@ -7,9 +6,9 @@ namespace Clubcore.Entities
     {
         public Guid PersonId { get; set; }
         public required PersonName Name { get; set; }
-        public List<Role> Roles { get; set; } = [];
-        public List<Feedback> Feedbacks { get; set; } = [];
-        public List<Group> Groups { get; set; } = [];
+        public ICollection<Role> Roles { get; set; } = [];
+        public ICollection<Feedback> Feedbacks { get; set; } = [];
+        public ICollection<Group> Groups { get; set; } = [];
     }
 
     [Owned]

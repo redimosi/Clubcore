@@ -1,5 +1,4 @@
-﻿using Clubcore.Common.DateTime;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Clubcore.Entities
 {
@@ -7,7 +6,7 @@ namespace Clubcore.Entities
     {
         public Guid ClubId { get; set; }
         public Guid GroupId { get; set; }
-        public List<TimeRange> TimeRanges { get; set; } = [];
+        public ICollection<TimeRange> TimeRanges { get; set; } = [];
     }
 
     [Owned]
