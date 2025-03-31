@@ -398,3 +398,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Ignore Docker-related files
+docker-compose.override.yml
+*.env
+
+# Ignore Docker volumes
+**/postgres_data/
+

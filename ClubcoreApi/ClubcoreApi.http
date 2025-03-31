@@ -1,6 +1,6 @@
 @ClubcoreApi_HostAddress = http://localhost:5289
 
-GET {{ClubcoreApi_HostAddress}}/weatherforecast/
+GET {{ClubcoreApi_HostAddress}}/api/
 Accept: application/json
 
 ###
