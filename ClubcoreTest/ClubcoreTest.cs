@@ -1,10 +1,7 @@
-using NUnit.Framework;
-using Moq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Clubcore.Infrastructure;
 using Clubcore.Entities;
-using System.Linq;
 
 namespace ClubcoreTest
 {
@@ -23,18 +20,6 @@ namespace ClubcoreTest
                    .UseInternalServiceProvider(serviceProvider);
 
             return builder.Options;
-        }
-
-        private static void SeedData(DbContextOptions<ClubcoreDbContext> options)
-        {
-            using (var context = new ClubcoreDbContext(options))
-            {
-                var person = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person" } };
-                var group = new Group { Name = "Test Group 1" };
-                var role = new Role { Name = "Test Role" };
-                context.Clubs.Add(new Club { Name = "Test Club" });
-                context.SaveChanges();
-            }
         }
 
         [Test]
@@ -187,6 +172,79 @@ namespace ClubcoreTest
 
                 Assert.That(childGroup2.ParentGroups.Count, Is.EqualTo(1));
                 Assert.That(childGroup2.ParentGroups.Any(gr => gr.Name == "Parent Group 1"), Is.True);
+            }
+        }
+
+        [Test]
+        public void CanManagePersonRoles()
+        {
+            var options = CreateNewContextOptions();
+            // Run the test against one instance of the context
+            using (var context = new ClubcoreDbContext(options))
+            {
+                var person1 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 1" } };
+                var person2 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 2" } };
+                var role1 = new Role { Name = "Role 1" };
+                var role2 = new Role { Name = "Role 2" };
+                person1.Roles.Add(role1);
+                person1.Roles.Add(role2);
+                person2.Roles.Add(role2);
+                context.Persons.AddRange(person1, person2);
+                context.Roles.AddRange(role1, role2);
+                context.SaveChanges();
+            }
+            // Use a separate instance of the context to verify correct data was saved to database
+            using (var context = new ClubcoreDbContext(options))
+            {
+                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1");
+                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 2");
+                Assert.That(person1.Roles.Count, Is.EqualTo(2));
+                Assert.That(person1.Roles.Any(r => r.Name == "Role 1"), Is.True);
+                Assert.That(person1.Roles.Any(r => r.Name == "Role 2"), Is.True);
+                Assert.That(person2.Roles.Count, Is.EqualTo(1));
+                Assert.That(person2.Roles.Any(r => r.Name == "Role 2"), Is.True);
+                var role1 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 1");
+                var role2 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 2");
+                Assert.That(role1.Persons.Count, Is.EqualTo(1));
+                Assert.That(role1.Persons.Any(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1"), Is.True);
+                Assert.That(role2.Persons.Count, Is.EqualTo(2));
+                Assert.That(role2.Persons.Any(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1"), Is.True);
+            }
+        }
+
+        [Test]
+        public void CanManageGroupPersonRoles()
+        {
+            var options = CreateNewContextOptions();
+            // Run the test against one instance of the context
+            using (var context = new ClubcoreDbContext(options))
+            {
+                var person1 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 1" } };
+                var person2 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 2" } };
+                var group1 = new Group { Name = "Group 1" };
+                var group2 = new Group { Name = "Group 2" };
+                var role1 = new Role { Name = "Role 1" };
+                var role2 = new Role { Name = "Role 2" };
+                person1.Roles.Add(role1);
+                person1.Roles.Add(role2);
+                person2.Roles.Add(role2);
+                context.Persons.AddRange(person1, person2);
+                context.Roles.AddRange(role1, role2);
+                context.Groups.AddRange(group1, group2);
+                context.SaveChanges();
+            }
+            // Use a separate instance of the context to verify correct data was saved to database
+            using (var context = new ClubcoreDbContext(options))
+            {
+                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1");
+                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 2");
+                Assert.That(person1.Roles.Count, Is.EqualTo(2));
+                Assert.That(person1.Roles.Any(r => r.Name == "Role 1"), Is.True);
+                Assert.That(person1.Roles.Any(r => r.Name == "Role 2"), Is.True);
+                Assert.That(person2.Roles.Count, Is.EqualTo(1));
+                Assert.That(person2.Roles.Any(r => r.Name == "Role 2"), Is.True);
+                var role1 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 1");
+                var role2 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 2");
             }
         }
     }

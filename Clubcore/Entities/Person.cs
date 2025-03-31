@@ -11,11 +11,10 @@ namespace Clubcore.Entities
         public ICollection<Group> Groups { get; set; } = [];
     }
 
-    [Owned]
-    public class PersonName
+    public struct PersonName
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MobileNr { get; set; }
+        public string? MobileNr { get; set; }
     }
 }

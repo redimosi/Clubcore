@@ -1,17 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Clubcore.Entities;
-using Microsoft.Extensions.Hosting;
 
 namespace Clubcore.Infrastructure
 {
-    public class ClubcoreDbContext : DbContext
+    public class ClubcoreDbContext(DbContextOptions<ClubcoreDbContext> options) : DbContext(options)
     {
-        public ClubcoreDbContext(DbContextOptions<ClubcoreDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Person> Persons { get; set; }
@@ -37,11 +30,26 @@ namespace Clubcore.Infrastructure
                 .UsingEntity<GroupRelationship>(
                     l => l.HasOne<Group>().WithMany().HasForeignKey(e => e.ParentGroupId),
                     r => r.HasOne<Group>().WithMany().HasForeignKey(e =>e.ChildGroupId));
+
+            modelBuilder.Entity<Person>()
+                .HasMany(g => g.Roles)
+                .WithMany(c => c.Persons)
+                .UsingEntity<PersonRole>();
+
+            modelBuilder.Entity<Role>()
+                .HasMany(g => g.Persons)
+                .WithMany(c => c.Roles)
+                .UsingEntity<PersonRole>();
+
+            modelBuilder.Entity<Event>()
+            .HasMany(e => e.Feedbacks)
+            .WithOne()
+            .HasForeignKey(f => f.EventId);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=my_host;Database=my_db;Username=my_user;Password=my_pw");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseNpgsql("Host=my_host;Database=my_db;Username=my_user;Password=my_pw");
+        //}
     }
 }
