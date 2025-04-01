@@ -3,8 +3,12 @@ using Clubcore.Entities;
 
 namespace Clubcore.Infrastructure
 {
-    public class ClubcoreDbContext(DbContextOptions<ClubcoreDbContext> options) : DbContext(options)
+    public class ClubcoreDbContext : DbContext
     {
+        public ClubcoreDbContext(DbContextOptions<ClubcoreDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Person> Persons { get; set; }
@@ -29,7 +33,7 @@ namespace Clubcore.Infrastructure
                 .WithMany(g => g.ChildGroups)
                 .UsingEntity<GroupRelationship>(
                     l => l.HasOne<Group>().WithMany().HasForeignKey(e => e.ParentGroupId),
-                    r => r.HasOne<Group>().WithMany().HasForeignKey(e =>e.ChildGroupId));
+                    r => r.HasOne<Group>().WithMany().HasForeignKey(e => e.ChildGroupId));
 
             modelBuilder.Entity<Person>()
                 .OwnsOne(p => p.Name);
@@ -49,10 +53,6 @@ namespace Clubcore.Infrastructure
             .WithOne()
             .HasForeignKey(f => f.EventId);
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseNpgsql("Host=my_host;Database=my_db;Username=my_user;Password=my_pw");
-        //}
     }
 }
+
