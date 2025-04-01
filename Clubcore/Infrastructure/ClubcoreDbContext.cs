@@ -32,6 +32,9 @@ namespace Clubcore.Infrastructure
                     r => r.HasOne<Group>().WithMany().HasForeignKey(e =>e.ChildGroupId));
 
             modelBuilder.Entity<Person>()
+                .OwnsOne(p => p.Name);
+
+            modelBuilder.Entity<Person>()
                 .HasMany(g => g.Roles)
                 .WithMany(c => c.Persons)
                 .UsingEntity<PersonRole>();

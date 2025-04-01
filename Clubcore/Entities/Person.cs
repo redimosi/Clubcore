@@ -11,7 +11,7 @@ namespace Clubcore.Entities
         public ICollection<Group> Groups { get; set; } = [];
     }
 
-    public struct PersonName
+    public class PersonName
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
