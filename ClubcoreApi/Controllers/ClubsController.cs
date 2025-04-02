@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Clubcore.Entities;
 using Clubcore.Infrastructure;
+using ClubcoreApi.Models;
 
 namespace ClubcoreApi.Controllers
 {
@@ -88,6 +89,26 @@ namespace ClubcoreApi.Controllers
             return NoContent();
         }
 
+        [HttpPost("{id}/groups")]
+        public async Task<IActionResult> AddGroupToClub(Guid id, AddGroupToClubDto dto)
+        {
+            var club = await _context.Clubs.Include(c => c.Groups).FirstOrDefaultAsync(c => c.ClubId == id);
+            if (club == null)
+            {
+                return NotFound();
+            }
+
+            var group = await _context.Groups.FindAsync(dto.GroupId);
+            if (group == null)
+            {
+                return NotFound();
+            }
+
+            club.Groups.Add(group);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
         private bool ClubExists(Guid id)
         {
             return _context.Clubs.Any(e => e.ClubId == id);

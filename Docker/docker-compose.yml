@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_REGISTRY-}clubcoreapi
     build:
       context: .
-      dockerfile: ClubcoreApi/Dockerfile
+      dockerfile: ../ClubcoreApi/Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -19,7 +19,4 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+      - ./bin/postgres:/var/lib/postgresql/data
