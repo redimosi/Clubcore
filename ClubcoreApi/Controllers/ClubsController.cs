@@ -20,7 +20,7 @@ namespace ClubcoreApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Club>>> GetClubs()
         {
-            return await _context.Clubs.ToListAsync();
+            return await _context.Clubs.Include(g=>g.Groups).ToListAsync();
         }
 
         [HttpGet("{id}")]

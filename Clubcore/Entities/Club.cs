@@ -4,6 +4,6 @@
     {
         public Guid ClubId { get; set; }
         public string Name { get; set; } = null!;
-        public ICollection<Group> Groups = [];
+        public ICollection<Group> Groups { get; set; } = [];
     }
 }

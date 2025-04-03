@@ -1,5 +1,6 @@
 
 using Clubcore.Infrastructure;
+using ClubcoreApi.Mappings;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -22,6 +23,10 @@ namespace ClubcoreApi
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("ClubcoreDb"));
             });
+
+            // Add AutoMapper
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
