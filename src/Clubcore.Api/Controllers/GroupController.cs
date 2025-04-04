@@ -7,7 +7,7 @@ namespace Clubcore.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController(IGroupService groupService) : ControllerBase
+    public class GroupController(IGroupService groupService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GroupDto>>> GetGroups()

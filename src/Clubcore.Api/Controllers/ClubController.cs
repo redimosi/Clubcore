@@ -7,7 +7,7 @@ namespace Clubcore.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClubsController(IClubService clubService) : ControllerBase
+    public class ClubController(IClubService clubService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubs()

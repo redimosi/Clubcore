@@ -1,5 +1,6 @@
 using Clubcore.Api.Mappings;
 using Clubcore.Api.Services;
+using Clubcore.Domain.Services;
 using Clubcore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -26,6 +27,7 @@ namespace Clubcore.Api
 
             builder.Services.AddScoped<IGroupService, GroupService>();
             builder.Services.AddScoped<IClubService, ClubService>();
+            builder.Services.AddScoped<IPersonService, PersonService>();
 
             // Add AutoMapper
             builder.Services.AddAutoMapper(typeof(MappingProfile));

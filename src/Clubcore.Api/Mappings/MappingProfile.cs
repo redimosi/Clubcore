@@ -1,6 +1,7 @@
 using AutoMapper;
 using Clubcore.Api.Models;
 using Clubcore.Domain.AggregatesModel;
+using Clubcore.Domain.Models;
 
 namespace Clubcore.Api.Mappings
 {
@@ -10,7 +11,18 @@ namespace Clubcore.Api.Mappings
         {
             CreateMap<Club, ClubDto>();
             CreateMap<Group, GroupDto>();
-            // Add other mappings as needed
+            CreateMap<Person, PersonDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Name.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Name.LastName))
+                .ForMember(dest => dest.MobileNr, opt => opt.MapFrom(src => src.Name.MobileNr));
+
+            CreateMap<PersonDto, Person>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => new PersonName
+                {
+                    FirstName = src.FirstName,
+                    LastName = src.LastName,
+                    MobileNr = src.MobileNr
+                }));
         }
     }
 }
