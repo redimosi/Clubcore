@@ -13,13 +13,13 @@ namespace Clubcore.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            // Add services to the container.
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
+
+            builder.Configuration.AddEnvironmentVariables();
             builder.Services.AddDbContext<ClubcoreDbContext>(options =>
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("ClubcoreDb"));
