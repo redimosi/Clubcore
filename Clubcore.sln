@@ -3,13 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubcore", "Clubcore\Clubcore.csproj", "{6C30B493-E216-5CC8-590B-93FACA46ED76}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubcoreTest", "ClubcoreTest\ClubcoreTest.csproj", "{0467B5EA-FB6B-43F9-9186-3210AB3E303C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubcoreApi", "ClubcoreApi\ClubcoreApi.csproj", "{D2207FB6-032B-47C0-9E2D-7E451DF3F80B}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "Docker\docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubcore.Infrastructure", "src\Clubcore.Infrastructure\Clubcore.Infrastructure.csproj", "{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubcore.Domain", "src\Clubcore.Domain\Clubcore.Domain.csproj", "{045048B0-971E-4843-A245-2FEFFC681C62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubcore.Api", "src\Clubcore.Api\Clubcore.Api.csproj", "{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{1661C314-680F-4385-A318-1B9FD1A6120B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{533B111A-B9C7-4C19-B8A6-66125C2CF1CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubcore.Tests", "tests\Clubcore.Test\Clubcore.Tests.csproj", "{9925B620-48C8-EA66-D097-3F451EBC3DD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,25 +31,36 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C30B493-E216-5CC8-590B-93FACA46ED76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C30B493-E216-5CC8-590B-93FACA46ED76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C30B493-E216-5CC8-590B-93FACA46ED76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C30B493-E216-5CC8-590B-93FACA46ED76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0467B5EA-FB6B-43F9-9186-3210AB3E303C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0467B5EA-FB6B-43F9-9186-3210AB3E303C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0467B5EA-FB6B-43F9-9186-3210AB3E303C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0467B5EA-FB6B-43F9-9186-3210AB3E303C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2207FB6-032B-47C0-9E2D-7E451DF3F80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2207FB6-032B-47C0-9E2D-7E451DF3F80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2207FB6-032B-47C0-9E2D-7E451DF3F80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2207FB6-032B-47C0-9E2D-7E451DF3F80B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{045048B0-971E-4843-A245-2FEFFC681C62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{045048B0-971E-4843-A245-2FEFFC681C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{045048B0-971E-4843-A245-2FEFFC681C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{045048B0-971E-4843-A245-2FEFFC681C62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9925B620-48C8-EA66-D097-3F451EBC3DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9925B620-48C8-EA66-D097-3F451EBC3DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9925B620-48C8-EA66-D097-3F451EBC3DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9925B620-48C8-EA66-D097-3F451EBC3DD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A} = {1661C314-680F-4385-A318-1B9FD1A6120B}
+		{CDA46A8E-5CB7-4D54-A780-C05A9B29A4EA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{045048B0-971E-4843-A245-2FEFFC681C62} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{ED952ED5-5EF3-A5CD-19DF-A47D7DCAFB57} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9925B620-48C8-EA66-D097-3F451EBC3DD2} = {533B111A-B9C7-4C19-B8A6-66125C2CF1CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06B065A5-DFAA-45EC-A467-F8B3C5BC0C0D}
