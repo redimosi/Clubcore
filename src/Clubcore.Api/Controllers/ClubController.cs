@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
 using Clubcore.Api.Models;
 using Clubcore.Api.Services;
 

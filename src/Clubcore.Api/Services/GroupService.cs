@@ -1,4 +1,3 @@
-using AutoMapper;
 using Clubcore.Api.Models;
 using Clubcore.Domain.AggregatesModel;
 using Clubcore.Infrastructure;
@@ -6,18 +5,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clubcore.Api.Services
 {
-    public class GroupService(ClubcoreDbContext context, IMapper mapper) : IGroupService
+    public class GroupService(ClubcoreDbContext context) : IGroupService
     {
         public async Task<IEnumerable<GroupDto>> GetGroups()
         {
             var groups = await context.Groups.ToListAsync();
-            return mapper.Map<List<GroupDto>>(groups);
+            return groups.Select(g => new GroupDto
+            {
+                GroupId = g.GroupId,
+                Name = g.Name
+            }).ToList();
         }
 
         public async Task<GroupDto?> GetGroup(Guid id)
         {
             var group = await context.Groups.FindAsync(id);
-            return mapper.Map<GroupDto?>(group);
+            if (group == null) return null;
+
+            return new GroupDto
+            {
+                GroupId = group.GroupId,
+                Name = group.Name
+            };
         }
 
         public async Task UpdateGroup(Guid id, GroupDto groupDto)
@@ -27,7 +36,14 @@ namespace Clubcore.Api.Services
                 throw new ArgumentException("ID mismatch");
             }
 
-            var group = mapper.Map<Group>(groupDto);
+            var group = await context.Groups.FindAsync(id);
+            if (group == null)
+            {
+                throw new KeyNotFoundException("Group not found");
+            }
+
+            group.Name = groupDto.Name;
+
             context.Entry(group).State = EntityState.Modified;
 
             try
@@ -49,11 +65,20 @@ namespace Clubcore.Api.Services
 
         public async Task<GroupDto> CreateGroup(GroupDto groupDto)
         {
-            var group = mapper.Map<Group>(groupDto);
+            var group = new Group
+            {
+                GroupId = Guid.NewGuid(),
+                Name = groupDto.Name
+            };
+
             context.Groups.Add(group);
             await context.SaveChangesAsync();
 
-            return mapper.Map<GroupDto>(group);
+            return new GroupDto
+            {
+                GroupId = group.GroupId,
+                Name = group.Name
+            };
         }
 
         public async Task DeleteGroup(Guid id)

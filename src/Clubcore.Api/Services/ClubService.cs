@@ -1,4 +1,3 @@
-using AutoMapper;
 using Clubcore.Api.Models;
 using Clubcore.Domain.AggregatesModel;
 using Clubcore.Infrastructure;
@@ -6,13 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clubcore.Api.Services
 {
-    public class ClubService(ClubcoreDbContext context, IMapper mapper) : IClubService
+    public class ClubService(ClubcoreDbContext context) : IClubService
     {
         public async Task<IEnumerable<ClubDto>> GetClubs()
         {
             return await context.Clubs
                 .Include(c => c.Groups)
-                .Select(c => mapper.Map<ClubDto>(c))
+                .Select(c => new ClubDto
+                {
+                    ClubId = c.ClubId,
+                    Name = c.Name,
+                    Groups = c.Groups.Select(g => new GroupDto
+                    {
+                        GroupId = g.GroupId,
+                        Name = g.Name
+                    }).ToList()
+                })
                 .ToListAsync();
         }
 
@@ -22,7 +30,21 @@ namespace Clubcore.Api.Services
                 .Include(g => g.Groups)
                 .FirstOrDefaultAsync(c => c.ClubId == id);
 
-            return mapper.Map<ClubDto?>(club);
+            if (club == null)
+            {
+                return null;
+            }
+
+            return new ClubDto
+            {
+                ClubId = club.ClubId,
+                Name = club.Name,
+                Groups = club.Groups.Select(g => new GroupDto
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name
+                }).ToList()
+            };
         }
 
         public async Task UpdateClub(Guid id, ClubDto clubDto)
@@ -32,7 +54,19 @@ namespace Clubcore.Api.Services
                 throw new ArgumentException("ID mismatch");
             }
 
-            var club = mapper.Map<Club>(clubDto);
+            var club = await context.Clubs.Include(c => c.Groups).FirstOrDefaultAsync(c => c.ClubId == id);
+            if (club == null)
+            {
+                throw new KeyNotFoundException("Club not found");
+            }
+
+            club.Name = clubDto.Name;
+            club.Groups = clubDto.Groups.Select(g => new Group
+            {
+                GroupId = g.GroupId,
+                Name = g.Name
+            }).ToList();
+
             context.Entry(club).State = EntityState.Modified;
 
             try
@@ -54,11 +88,30 @@ namespace Clubcore.Api.Services
 
         public async Task<ClubDto> CreateClub(ClubDto clubDto)
         {
-            var club = mapper.Map<Club>(clubDto);
+            var club = new Club
+            {
+                ClubId = clubDto.ClubId,
+                Name = clubDto.Name,
+                Groups = clubDto.Groups.Select(g => new Group
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name
+                }).ToList()
+            };
+
             context.Clubs.Add(club);
             await context.SaveChangesAsync();
 
-            return mapper.Map<ClubDto>(club);
+            return new ClubDto
+            {
+                ClubId = club.ClubId,
+                Name = club.Name,
+                Groups = club.Groups.Select(g => new GroupDto
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name
+                }).ToList()
+            };
         }
 
         public async Task DeleteClub(Guid id)
@@ -84,7 +137,11 @@ namespace Clubcore.Api.Services
             var group = await context.Groups.FindAsync(groupDto.GroupId);
             if (group == null)
             {
-                group = mapper.Map<Group>(groupDto);
+                group = new Group
+                {
+                    GroupId = groupDto.GroupId,
+                    Name = groupDto.Name
+                };
             }
 
             club.Groups.Add(group);

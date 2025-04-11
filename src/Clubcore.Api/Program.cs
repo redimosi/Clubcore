@@ -1,4 +1,3 @@
-using Clubcore.Api.Mappings;
 using Clubcore.Api.Services;
 using Clubcore.Domain.Services;
 using Clubcore.Infrastructure;
@@ -28,9 +27,6 @@ namespace Clubcore.Api
             builder.Services.AddScoped<IGroupService, GroupService>();
             builder.Services.AddScoped<IClubService, ClubService>();
             builder.Services.AddScoped<IPersonService, PersonService>();
-
-            // Add AutoMapper
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

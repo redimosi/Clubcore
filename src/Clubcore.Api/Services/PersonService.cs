@@ -1,4 +1,3 @@
-using AutoMapper;
 using Clubcore.Domain.AggregatesModel;
 using Clubcore.Domain.Models;
 using Clubcore.Domain.Services;
@@ -7,24 +6,47 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clubcore.Api.Services
 {
-    public class PersonService(ClubcoreDbContext context, IMapper mapper) : IPersonService
+    public class PersonService(ClubcoreDbContext context) : IPersonService
     {
         public async Task<IEnumerable<PersonDto>> GetAllPersonsAsync()
         {
             var persons = await context.Persons.ToListAsync();
-            return mapper.Map<List<PersonDto>>(persons);
+            return persons.Select(person => new PersonDto
+            {
+                PersonId = person.PersonId,
+                FirstName = person.Details.FirstName,
+                LastName = person.Details.LastName,
+                MobileNr = person.Details.MobileNr
+            }).ToList();
         }
 
         public async Task<PersonDto?> GetPersonByIdAsync(Guid personId)
         {
             var person = await context.Persons.FindAsync(personId);
-            return mapper.Map<PersonDto?>(person);
+            if (person == null) return null;
+
+            return new PersonDto
+            {
+                PersonId = person.PersonId,
+                FirstName = person.Details.FirstName,
+                LastName = person.Details.LastName,
+                MobileNr = person.Details.MobileNr
+            };
         }
 
         public async Task AddPersonAsync(PersonDto personDto)
         {
-            var person = mapper.Map<Person>(personDto);
-            person.PersonId = Guid.NewGuid();
+            var person = new Person
+            {
+                PersonId = Guid.NewGuid(),
+                Details = new PersonDetails
+                {
+                    FirstName = personDto.FirstName,
+                    LastName = personDto.LastName,
+                    MobileNr = personDto.MobileNr
+                }
+            };
+
             context.Persons.Add(person);
             await context.SaveChangesAsync();
         }
@@ -37,7 +59,10 @@ namespace Clubcore.Api.Services
                 throw new KeyNotFoundException("Person not found");
             }
 
-            mapper.Map(personDto, person);
+            person.Details.FirstName = personDto.FirstName;
+            person.Details.LastName = personDto.LastName;
+            person.Details.MobileNr = personDto.MobileNr;
+
             context.Entry(person).State = EntityState.Modified;
 
             try

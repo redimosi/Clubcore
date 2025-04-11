@@ -5,10 +5,11 @@
         public enum GroupType
         {
             Team,
+            Official,
             Other
         }
         public Guid GroupId { get; set; }
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public ICollection<Club> Clubs { get; private set; } = [];
         public ICollection<ClubGroup> ClubGroups { get; private set; } = [];
         public ICollection<PersonRole> PersonRoles { get; set; } = [];

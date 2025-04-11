@@ -182,8 +182,8 @@ namespace Clubcore.Tests
             // Run the test against one instance of the context
             using (var context = new ClubcoreDbContext(options))
             {
-                var person1 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 1" } };
-                var person2 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 2" } };
+                var person1 = new Person { Details = new PersonDetails { FirstName = "Test", LastName = "Person 1" } };
+                var person2 = new Person { Details = new PersonDetails { FirstName = "Test", LastName = "Person 2" } };
                 var role1 = new Role { Name = "Role 1" };
                 var role2 = new Role { Name = "Role 2" };
                 person1.Roles.Add(role1);
@@ -196,8 +196,8 @@ namespace Clubcore.Tests
             // Use a separate instance of the context to verify correct data was saved to database
             using (var context = new ClubcoreDbContext(options))
             {
-                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1");
-                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 2");
+                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 1");
+                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 2");
                 Assert.That(person1.Roles.Count, Is.EqualTo(2));
                 Assert.That(person1.Roles.Any(r => r.Name == "Role 1"), Is.True);
                 Assert.That(person1.Roles.Any(r => r.Name == "Role 2"), Is.True);
@@ -206,9 +206,9 @@ namespace Clubcore.Tests
                 var role1 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 1");
                 var role2 = context.Roles.Include(r => r.Persons).Single(r => r.Name == "Role 2");
                 Assert.That(role1.Persons.Count, Is.EqualTo(1));
-                Assert.That(role1.Persons.Any(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1"), Is.True);
+                Assert.That(role1.Persons.Any(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 1"), Is.True);
                 Assert.That(role2.Persons.Count, Is.EqualTo(2));
-                Assert.That(role2.Persons.Any(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1"), Is.True);
+                Assert.That(role2.Persons.Any(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 1"), Is.True);
             }
         }
 
@@ -219,8 +219,8 @@ namespace Clubcore.Tests
             // Run the test against one instance of the context
             using (var context = new ClubcoreDbContext(options))
             {
-                var person1 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 1" } };
-                var person2 = new Person { Name = new PersonName { FirstName = "Test", LastName = "Person 2" } };
+                var person1 = new Person { Details = new PersonDetails { FirstName = "Test", LastName = "Person 1" } };
+                var person2 = new Person { Details = new PersonDetails { FirstName = "Test", LastName = "Person 2" } };
                 var group1 = new Group { Name = "Group 1" };
                 var group2 = new Group { Name = "Group 2" };
                 var role1 = new Role { Name = "Role 1" };
@@ -236,8 +236,8 @@ namespace Clubcore.Tests
             // Use a separate instance of the context to verify correct data was saved to database
             using (var context = new ClubcoreDbContext(options))
             {
-                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 1");
-                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Name.FirstName == "Test" && p.Name.LastName == "Person 2");
+                var person1 = context.Persons.Include(p => p.Roles).Single(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 1");
+                var person2 = context.Persons.Include(p => p.Roles).Single(p => p.Details.FirstName == "Test" && p.Details.LastName == "Person 2");
                 Assert.That(person1.Roles.Count, Is.EqualTo(2));
                 Assert.That(person1.Roles.Any(r => r.Name == "Role 1"), Is.True);
                 Assert.That(person1.Roles.Any(r => r.Name == "Role 2"), Is.True);
