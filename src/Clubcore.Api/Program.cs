@@ -21,7 +21,8 @@ namespace Clubcore.Api
             builder.Configuration.AddEnvironmentVariables();
             builder.Services.AddDbContext<ClubcoreDbContext>(options =>
             {
-                options.UseNpgsql(builder.Configuration.GetConnectionString("ClubcoreDb"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ClubcoreDb"),
+                b => b.MigrationsAssembly("Clubcore.Infrastructure"));
             });
 
             builder.Services.AddScoped<IGroupService, GroupService>();

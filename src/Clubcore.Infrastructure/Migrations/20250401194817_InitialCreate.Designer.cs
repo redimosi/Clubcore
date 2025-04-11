@@ -25,7 +25,7 @@ namespace Clubcore.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Clubcore.Entities.Club", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Club", b =>
                 {
                     b.Property<Guid>("ClubId")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Clubs");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.ClubGroup", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.ClubGroup", b =>
                 {
                     b.Property<Guid>("ClubId")
                         .HasColumnType("uuid");
@@ -55,7 +55,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("ClubGroup");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Event", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Event", b =>
                 {
                     b.Property<Guid>("EventId")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Feedback", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Feedback", b =>
                 {
                     b.Property<Guid>("FeedbackId")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Group", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Group", b =>
                 {
                     b.Property<Guid>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -125,7 +125,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.GroupRelationship", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.GroupRelationship", b =>
                 {
                     b.Property<Guid>("ChildGroupId")
                         .HasColumnType("uuid");
@@ -140,7 +140,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("GroupRelationship");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Person", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Person", b =>
                 {
                     b.Property<Guid>("PersonId")
                         .ValueGeneratedOnAdd()
@@ -151,7 +151,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.PersonRole", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.PersonRole", b =>
                 {
                     b.Property<Guid>("PersonId")
                         .HasColumnType("uuid");
@@ -171,7 +171,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("PersonRole");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Role", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Role", b =>
                 {
                     b.Property<Guid>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -186,7 +186,7 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.TimeRange", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.TimeRange", b =>
                 {
                     b.Property<Guid>("TimeRangeId")
                         .ValueGeneratedOnAdd()
@@ -231,24 +231,24 @@ namespace Clubcore.Infrastructure.Migrations
                     b.ToTable("TimeRange");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.ClubGroup", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.ClubGroup", b =>
                 {
-                    b.HasOne("Clubcore.Entities.Club", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Club", null)
                         .WithMany()
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clubcore.Entities.Group", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Group", null)
                         .WithMany("ClubGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Event", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Event", b =>
                 {
-                    b.HasOne("Clubcore.Entities.TimeRange", "TimeRange")
+                    b.HasOne("Clubcore.Domain.AggregatesModel.TimeRange", "TimeRange")
                         .WithMany()
                         .HasForeignKey("TimeRangeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -257,46 +257,46 @@ namespace Clubcore.Infrastructure.Migrations
                     b.Navigation("TimeRange");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Feedback", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Feedback", b =>
                 {
-                    b.HasOne("Clubcore.Entities.Event", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Event", null)
                         .WithMany("Feedbacks")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clubcore.Entities.Person", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Person", null)
                         .WithMany("Feedbacks")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Group", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Group", b =>
                 {
-                    b.HasOne("Clubcore.Entities.Person", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Person", null)
                         .WithMany("Groups")
                         .HasForeignKey("PersonId");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.GroupRelationship", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.GroupRelationship", b =>
                 {
-                    b.HasOne("Clubcore.Entities.Group", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Group", null)
                         .WithMany()
                         .HasForeignKey("ChildGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clubcore.Entities.Group", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Group", null)
                         .WithMany()
                         .HasForeignKey("ParentGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Person", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Person", b =>
                 {
-                    b.OwnsOne("Clubcore.Entities.PersonName", "Name", b1 =>
+                    b.OwnsOne("Clubcore.Domain.AggregatesModel.PersonName", "Name", b1 =>
                         {
                             b1.Property<Guid>("PersonId")
                                 .HasColumnType("uuid");
@@ -324,70 +324,70 @@ namespace Clubcore.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.PersonRole", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.PersonRole", b =>
                 {
-                    b.HasOne("Clubcore.Entities.Group", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Group", null)
                         .WithMany("PersonRoles")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("Clubcore.Entities.Person", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Person", null)
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clubcore.Entities.Role", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.TimeRange", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.TimeRange", b =>
                 {
-                    b.HasOne("Clubcore.Entities.ClubGroup", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.ClubGroup", null)
                         .WithMany("TimeRanges")
                         .HasForeignKey("ClubGroupClubId", "ClubGroupGroupId");
 
-                    b.HasOne("Clubcore.Entities.GroupRelationship", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.GroupRelationship", null)
                         .WithMany("TimeRanges")
                         .HasForeignKey("GroupRelationshipChildGroupId", "GroupRelationshipParentGroupId");
 
-                    b.HasOne("Clubcore.Entities.PersonRole", null)
+                    b.HasOne("Clubcore.Domain.AggregatesModel.PersonRole", null)
                         .WithMany("TimeRanges")
                         .HasForeignKey("PersonRolePersonId", "PersonRoleRoleId");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.ClubGroup", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.ClubGroup", b =>
                 {
                     b.Navigation("TimeRanges");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Event", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Event", b =>
                 {
                     b.Navigation("Feedbacks");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Group", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Group", b =>
                 {
                     b.Navigation("ClubGroups");
 
                     b.Navigation("PersonRoles");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.GroupRelationship", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.GroupRelationship", b =>
                 {
                     b.Navigation("TimeRanges");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.Person", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.Person", b =>
                 {
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Groups");
                 });
 
-            modelBuilder.Entity("Clubcore.Entities.PersonRole", b =>
+            modelBuilder.Entity("Clubcore.Domain.AggregatesModel.PersonRole", b =>
                 {
                     b.Navigation("TimeRanges");
                 });
